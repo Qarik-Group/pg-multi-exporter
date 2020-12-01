@@ -1,0 +1,33 @@
+version: "2"
+services:
+  pg-multi-exporter:
+    image: pg-multi-exporter
+    build: .
+    environment:
+      - "PG_PASSWORD=postgres"
+      - "PG_USERNAME=postgres"
+      - "PG_HOST=postgres"
+      - "PG_PORT=5432"
+      - "PG_SSL_MODE=disable"
+  postgres:
+    image: test-postgres
+    build: images/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgresql_data:/bitnami/postgresql"
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200
+    environment:
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_USERNAME=postgres"
+      - "POSTGRES_DATABASE=postgres"
+      - "ALLOW_EMPTY_PASSWORD=yes"
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+volumes:
+  postgresql_data:
+    driver: local

@@ -1,5 +1,5 @@
-#!/usr/bin/execlineb -S0
+#!/usr/bin/with-contenv sh
 
-export DATA_SOURCE_NAME="user=postgres host=/var/run/postgresql/ sslmode=disable"
+export DATA_SOURCE_NAME="postgres://${PG_USERNAME}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/postgres?sslmode=${PG_SSL_MODE}"
 
-exporter_exporter
+postgres_exporter --log.level=debug --extend.query-path '/etc/postgres_exporter/queries.yml'
