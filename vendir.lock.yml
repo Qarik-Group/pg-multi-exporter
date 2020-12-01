@@ -7,5 +7,11 @@ directories:
       tags:
       - v0.4.0
     path: exporter_exporter
+  - git:
+      commitTitle: Add a build info metric (#323)...
+      sha: aeec47ead4ad3941cf1b6588b1ac5a44ca9e9c4b
+      tags:
+      - v0.8.0
+    path: postgres_exporter
   path: src
 kind: LockConfig
