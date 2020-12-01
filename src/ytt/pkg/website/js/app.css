@@ -1,0 +1,310 @@
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+/* Header stuff */
+h1 {
+  text-align: center;
+  margin-bottom: 0;
+}
+.hero {
+  font-size: 20px;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+}
+.logo {
+  color: #111;
+  font-size: 30px;
+  font-family: courier;
+}
+.logo strong {
+  margin-left: 5px;
+}
+.link-button,
+.button {
+  padding: 10px 15px 7px;
+  background: #f1f9ff;
+  border-radius: 13px;
+}
+.link-button { margin: 0 5px; }
+.try-online.link-button {
+  background: #c0efe4;
+  color: #238961;
+}
+.content {
+  margin: 10px auto;
+  padding: 0 15px;
+  width: 1000px;
+}
+input {
+  font-family: sans-serif;
+  font-size: 14px;
+  border-radius: 3px;
+  border: 1px solid #AAA;
+  padding: 4px;
+}
+input[disabled] {
+  background: #f7f7f7;
+  border-color: #f7f7f7;
+  color: #666;
+}
+p code {
+  background: #f1f1f1;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  padding: 2px 4px;
+  font-size: 80%;
+}
+a:visited, a, a:hover {
+  color: #00c;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.button {
+  border: none;
+  border-radius: 3px;
+  color: blue;
+  padding: 5px 10px;
+  margin: 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+}
+.example-set-button:before {
+  content: "▶ "
+}
+.example-set-button.expanded:before {
+  content: "▼ "
+}
+span button {
+  padding: 5px 10px;
+}
+.button:hover { text-decoration: underline; }
+.terminal {
+  background: #000;
+  color: #eee;
+  font-size: 80%;
+  padding: 7px 9px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+.terminal .green { color: #A1C935; }
+.terminal .red { color: red; }
+.terminal .gray { color: #777; }
+code, .terminal, .logo {
+  font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;
+}
+
+/* k14s tools */
+#k14s-tools {
+  margin: 0 auto;
+  padding: 0 15px;
+  width: 1000px;
+}
+#k14s-tools p {
+  color: #777;
+  margin: 0;
+  font-size: 80%;
+  padding: 5px 0;
+}
+#k14s-tools p a { color: #111; }
+
+/* Examples dropdown */
+.dropdown {}
+.button-container button {
+  margin: 0 10px 0 0;
+}
+.example-set {
+  display: none;
+}
+.example-set.expanded {display: block;}
+.example-set-name {
+  margin-bottom: 0px;
+}
+.example-set-description {
+  font-style: italic;
+  font-size: 10px;
+  margin-top: 0px;
+}
+.dropdown-content {
+  columns: 4;
+  -webkit-columns: 4;
+  -moz-columns: 4;
+  margin: 0 0 40px 0;
+}
+
+/* Intro */
+#intro {
+  clear: both;
+  display: flex;
+}
+#intro #features,
+#intro #resources {
+  flex: 1;
+}
+
+/* Playground */
+#playground .playground-inner { position: relative; }
+#playground .playground-inner .blocker {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  opacity: 0.8;
+  z-index: 10000;
+}
+#playground.expanded {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 1000px; /* Take up at least as much as .content */
+  background: #fff;
+}
+#playground.expanded h2 { font-size: 0%; }
+
+#playground .playground-inner {
+  display: flex;
+  font-size: 12px;
+  min-height: 1000px; /* Avoids content jumping around when changing examples*/
+}
+#playground .playground-inner .left,
+#playground .playground-inner .right {
+  flex: 1;
+  max-width: 50%;
+}
+#playground .playground-inner .left {
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+/* Playgroun controls */
+#playground .playground-inner .left { position: relative; }
+#playground .controls {
+  position: absolute;
+  right: 20px;
+  top: 0;
+}
+
+/* Eidtor configs */
+.CodeMirror,
+.CodeMirror-scroll {
+  height: auto;
+  overflow: hidden !important;
+}
+.CodeMirror-hscrollbar {
+  /* without following hor scrollbar isnt draggable */
+  pointer-events: auto !important;
+  outline: none;
+}
+
+#playground .config-boxes .CodeMirror { background: #fffff4; }
+
+/* Editor results */
+#playground .output h3 { margin: 2px 0; }
+#playground .output .CodeMirror { background: #f7f7f7; }
+#playground .output .CodeMirror-cursors { display: none; } /* results are readonly */
+.output-errors {
+  color: red;
+}
+.output-errors {
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+/* Loading indicator */
+.loading {
+  position: fixed;
+  z-index: 10000;
+  bottom: 0;
+  right: 0;
+  background: #efefef;
+  font-size: 80%;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+#footer { text-align: center; }
+
+/* Dark mode */
+body {
+  font-family: "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  background: #000;
+  color: #aaa;
+}
+.content-wrapper .hero { font-size: 16px; }
+.content-wrapper .logo { color: #fff; }
+.content-wrapper h2 {
+  color: #eee;
+  margin-top: 40px;
+}
+.content-wrapper li code,
+.content-wrapper p code {
+  background: #111;
+  border-color: #222;
+  font-size: 90%;
+}
+.content-wrapper a,
+.content-wrapper a:hover {
+  color: #eee;
+  text-decoration: underline;
+}
+.content-wrapper a:visited { color: #999; }
+.content-wrapper .link-button,
+.content-wrapper .button { background: #222; }
+.content-wrapper .try-online.link-button {
+  border: 2px solid #57edb2;
+  color: #57edb2;
+  background: none;
+}
+.content-wrapper .terminal {
+  border-radius: 0;
+  border-width: 0;
+  border-left: 3px solid #333;
+  padding-left: 15px;
+  font-size: 100%;
+  color: #ccc;
+}
+.content-wrapper .hero { border-width: 0; }
+.content-wrapper #features { border-width: 0; }
+.content-wrapper #features .highlight {
+  background: #333;
+  font-style: normal;
+}
+.content-wrapper #playground { border-width: 0; }
+.content-wrapper #workflow .terminal {
+  border-width: 0;
+  font-size: 80%;
+}
+.content-wrapper .green { color: #AFCE5E; }
+.content-wrapper .red { color: #ef4f4f; }
+.content-wrapper .gray { color: #555; }
+.content-wrapper .terminal .spacer-before {
+  margin-top: 8px;
+  display: inline-block;
+}
+.content-wrapper #k14s-tools p a { color: #eee; }
+.playground-wrapper {
+  margin-top: 40px;
+  padding: 20px 0;
+  background: #fff;
+  color: #444;
+}

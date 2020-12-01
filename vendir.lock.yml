@@ -13,5 +13,11 @@ directories:
       tags:
       - v0.8.0
     path: postgres_exporter
+  - git:
+      commitTitle: set version to 0.30.0
+      sha: 98c00dd09dae7a75f3c31e89e7d855671d6a9dce
+      tags:
+      - v0.30.0
+    path: ytt
   path: src
 kind: LockConfig

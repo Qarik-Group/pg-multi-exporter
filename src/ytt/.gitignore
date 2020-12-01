@@ -1,0 +1,5 @@
+/tmp
+/ytt
+/ytt-*
+*main
+.DS_Store

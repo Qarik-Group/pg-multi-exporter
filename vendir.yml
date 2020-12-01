@@ -11,4 +11,8 @@ directories:
     git:
       url: https://github.com/wrouesnel/postgres_exporter
       ref: v0.8.0
+  - path: ytt
+    git:
+      url: https://github.com/vmware-tanzu/carvel-ytt
+      ref: v0.30.0
 
