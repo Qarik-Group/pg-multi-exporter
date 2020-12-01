@@ -27,7 +27,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "./images/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
 volumes:
   postgresql_data:
     driver: local
