@@ -17,5 +17,9 @@ RUN chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer 
 
 COPY --from=builder /out/ /bin/
 
+RUN mkdir -p /etc/cont-init.d/
+ADD pre-start.sh /etc/cont-init.d/
+
+ADD templates /templates
+
 ENTRYPOINT ["/init"]
-CMD ["nginx"]
