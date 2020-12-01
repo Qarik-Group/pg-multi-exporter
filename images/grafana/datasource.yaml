@@ -1,0 +1,23 @@
+apiVersion: 1
+
+deleteDatasources:
+- name: telegraf
+  orgId: 1
+
+datasources:
+- access: proxy
+  basicAuth: true
+  database: telegraf
+  id: 1
+  isDefault: true
+  jsonData:
+    httpMode: POST
+    version: InfluxQL
+  name: InfluxDB
+  orgId: 1
+  password: ""
+  readOnly: false
+  type: influxdb
+  typeLogoUrl: public/app/plugins/datasource/influxdb/img/influxdb_logo.svg
+  url: http://influxdb:8086
+  user: ""

@@ -10,8 +10,7 @@ services:
       - "PG_PORT=5432"
       - "PG_SSL_MODE=disable"
   postgres:
-    image: test-postgres
-    build: images/postgres
+    image: postgres:11
     ports:
       - "5432:5432"
     command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200
@@ -20,11 +19,14 @@ services:
       - "POSTGRES_USERNAME=postgres"
       - "POSTGRES_DATABASE=postgres"
       - "ALLOW_EMPTY_PASSWORD=yes"
+    volumes:
+      - ./images/postgres/enable-stats.sh:/docker-entrypoint-initdb.d/enable-stats.sh:ro
   telegraf:
     image: telegraf
     container_name: telegraf
     restart: always
     volumes:
+     - influxdb_data:/var/lib/influxdb
      - ./images/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
   influxdb:
     image: influxdb
@@ -34,21 +36,23 @@ services:
      - ./images/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     command: influxd -config /etc/influxdb/influxdb.conf
 
-  # grafana:
-  #   image: grafana/grafana:6.7.2
-  #   container_name: grafana
-  #   volumes:
-  #     - grafana_data:/var/lib/grafana
-  #     - ./grafana/provisioning:/etc/grafana/provisioning
-  #   environment:
-  #     - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
-  #     - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
-  #     - GF_USERS_ALLOW_SIGN_UP=false
-  #   restart: unless-stopped
-  #   expose:
-  #     - 3000
-  #   labels:
-  #     org.label-schema.group: "monitoring"
+  grafana:
+    image: grafana/grafana:7.3.4
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./images/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+
 volumes:
   postgresql_data:
+    driver: local
+  influxdb_data:
+    driver: local
+  grafana_data:
     driver: local
