@@ -22,12 +22,27 @@ services:
       - "POSTGRES_USERNAME=postgres"
       - "POSTGRES_DATABASE=postgres"
       - "ALLOW_EMPTY_PASSWORD=yes"
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - "9090:9090"
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
     volumes:
-      - "./images/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+     - ./images/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+  # grafana:
+  #   image: grafana/grafana:6.7.2
+  #   container_name: grafana
+  #   volumes:
+  #     - grafana_data:/var/lib/grafana
+  #     - ./grafana/provisioning:/etc/grafana/provisioning
+  #   environment:
+  #     - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
+  #     - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+  #     - GF_USERS_ALLOW_SIGN_UP=false
+  #   restart: unless-stopped
+  #   expose:
+  #     - 3000
+  #   labels:
+  #     org.label-schema.group: "monitoring"
 volumes:
   postgresql_data:
     driver: local
