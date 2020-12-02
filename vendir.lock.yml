@@ -4,20 +4,14 @@ directories:
   - git:
       commitTitle: Update version for release
       sha: 56893622ea5c360a02ab90862c8730b2ed7734d9
-      tags:
-      - v0.4.0
     path: exporter_exporter
   - git:
       commitTitle: Add a build info metric (#323)...
       sha: aeec47ead4ad3941cf1b6588b1ac5a44ca9e9c4b
-      tags:
-      - v0.8.0
     path: postgres_exporter
   - git:
       commitTitle: set version to 0.30.0
       sha: 98c00dd09dae7a75f3c31e89e7d855671d6a9dce
-      tags:
-      - v0.30.0
     path: ytt
   path: src
 kind: LockConfig
