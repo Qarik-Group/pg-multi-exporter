@@ -1,0 +1,103 @@
+name: pg-multi-exporter
+instance_groups:
+- name: pg-multi-exporter
+  networks:
+  - name: default
+  stemcell: default
+  vm_type: default
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: bpm
+    release: bpm
+  - name: pre-start-script
+    release: os-conf
+    properties:
+      script: |
+        #!/bin/bash
+        mkdir -p /var/vcap/sys/run/prom
+        cat <<EOF > /var/vcap/sys/run/prom/pg_multi_scraper_config.yml
+        port: 9187
+        source_id: "pg-multi-exporter"
+        instance_id: pg-multi-exporter
+        scheme: http
+        server_name: pg-multi-exporter
+        labels:
+          origin: loggregator.metron
+        EOF
+  - name: docker
+    release: containers
+    properties:
+      recipe:
+        version: '3'
+        services:
+          pg-multi-exporter:
+            image: bodymindarts/pg-multi-release:0.1.0
+            ports:
+              - "9187:9187"
+            environment:
+              - "PG_PASSWORD=((database.password))"
+              - "PG_USERNAME=((database.username))"
+              - "PG_HOST=((database.host))"
+              - "PG_PORT=((database.port))"
+              - "PG_SSL_MODE=disable"
+  - name: loggregator_agent
+    release: loggregator-agent
+    consumes:
+      doppler:
+        from: doppler
+        deployment: ((cf_deployment_name))
+    properties:
+      grpc_port: 3459
+      disable_udp: true
+      loggregator:
+        tls:
+          ca_cert: "((loggregator_tls_agent.ca))"
+          agent:
+            cert: "((loggregator_tls_agent.certificate))"
+            key: "((loggregator_tls_agent.private_key))"
+      metrics:
+        ca_cert: "((loggregator_agent_metrics_tls.ca))"
+        cert: "((loggregator_agent_metrics_tls.certificate))"
+        key: "((loggregator_agent_metrics_tls.private_key))"
+        server_name: loggregator_agent_metrics
+  - name: prom_scraper
+    release: loggregator-agent
+    properties:
+      config_globs:
+      - /var/vcap/sys/run/prom/*scraper_config.yml
+      loggregator_agent:
+        grpc_port: 3459
+        tls:
+          ca_cert: "((loggregator_tls_agent.ca))"
+          cert: "((loggregator_tls_agent.certificate))"
+          key: "((loggregator_tls_agent.private_key))"
+      metrics:
+        ca_cert: "((loggregator_agent_metrics_tls.ca))"
+        cert: "((loggregator_agent_metrics_tls.certificate))"
+        key: "((loggregator_agent_metrics_tls.private_key))"
+        server_name: loggregator_agent_metrics
+releases:
+- name: containers
+  url: https://github.com/jhunt/containers-boshrelease/releases/download/v1.5.1/containers-1.5.1.tgz
+  version: 1.5.1
+- name: "os-conf"
+  version: "22.1.0"
+  url: "https://bosh.io/d/github.com/cloudfoundry/os-conf-release?v=22.1.0"
+  sha1: "7ef05f6f3ebc03f59ad8131851dbd1abd1ab3663"
+- name: loggregator-agent
+  version: latest
+- name: bpm
+  version: latest
+
+update:
+  canaries:          1
+  max_in_flight:     1
+  serial:            true
+  canary_watch_time: 1000-120000
+  update_watch_time: 1000-120000
+
+stemcells:
+- alias:   default
+  os:      ubuntu-xenial
+  version: latest
