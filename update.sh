@@ -7,5 +7,6 @@ for dir in $(ls src); do
     [[ -f go.mod ]] || go mod init $(git remote -v | head -1 | awk '{print $2}' | sed 's@https://@@g')
     go mod vendor
     rm -rf .git
+    rm -f .gitignore
     popd
 done
