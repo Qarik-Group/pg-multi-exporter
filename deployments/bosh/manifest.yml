@@ -32,6 +32,9 @@ instance_groups:
         version: '3'
         services:
           pg-multi-exporter:
+            deploy:
+              restart_policy:
+                condition: on-failure
             image: starkandwayne/pg-multi-exporter:latest
             ports:
               - "9187:9187"
