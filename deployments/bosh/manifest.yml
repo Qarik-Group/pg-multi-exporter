@@ -32,7 +32,7 @@ instance_groups:
         version: '3'
         services:
           pg-multi-exporter:
-            image: bodymindarts/pg-multi-release:0.1.0
+            image: starkandwayne/pg-multi-exporter:latest
             ports:
               - "9187:9187"
             environment:
