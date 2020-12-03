@@ -150,7 +150,7 @@ pg_stat_statements:
         usage: "COUNTER"
         description: "Number of times executed"
     - total_time_seconds:
-        usage: "COUNTER"
+        usage: "GAUGE"
         description: "Total time spent in the statement, in milliseconds"
     - min_time_seconds:
         usage: "GAUGE"
