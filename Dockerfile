@@ -25,3 +25,6 @@ ADD pre-start.sh /etc/cont-init.d/
 ADD templates /templates
 
 ENTRYPOINT ["/init"]
+
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl -I http://localhost:9187 || exit 1

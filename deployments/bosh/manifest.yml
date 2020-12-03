@@ -32,14 +32,7 @@ instance_groups:
         version: '3'
         services:
           pg-multi-exporter:
-            deploy:
-              restart_policy:
-                condition: on-failure
-            healthcheck:
-              test: [ "CMD", "curl", "-I", "localhost:9187" ]
-              timeout: 5s
-              interval: 10s
-              retries: 2
+            restart: on-failure
             image: starkandwayne/pg-multi-exporter:latest
             ports:
               - "9187:9187"

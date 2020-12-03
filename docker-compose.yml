@@ -1,8 +1,9 @@
-version: "2"
+version: "3"
 services:
   pg-multi-exporter:
     image: pg-multi-exporter
     build: .
+    restart: on-failure
     environment:
       - "PG_PASSWORD=postgres"
       - "PG_USERNAME=postgres"
