@@ -3,10 +3,10 @@ kind: Config
 directories:
 - path: src
   contents:
-  - path: exporter_exporter
+  - path: telegraf
     git:
-      url: https://github.com/QubitProducts/exporter_exporter
-      ref: v0.4.0
+      url: https://github.com/influxdata/telegraf
+      ref: v1.16.3
   - path: postgres_exporter
     git:
       url: https://github.com/wrouesnel/postgres_exporter
