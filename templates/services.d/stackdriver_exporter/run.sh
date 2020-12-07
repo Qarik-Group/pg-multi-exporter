@@ -4,4 +4,9 @@
 # STACKDRIVER_EXPORTER_WEB_LISTEN_ADDRESS 9255
 # STACKDRIVER_EXPORTER_MONITORING_METRICS_TYPE_PREFIXES cloudsql.googleapis.com/database/cpu/utilization
 
-stackdriver_exporter
+export GOOGLE_APPLICATION_CREDENTIALS=/etc/stackdriver_exporter/gcp.json
+
+stackdriver_exporter \
+    --monitoring.metrics-type-prefixes "cloudsql.googleapis.com/database/cpu/utilization, \
+					cloudsql.googleapis.com/database/disk/read_ops_count, \
+					cloudsql.googleapis.com/database/disk/write_ops_count"
