@@ -11,6 +11,10 @@ directories:
     git:
       url: https://github.com/wrouesnel/postgres_exporter
       ref: v0.8.0
+  - path: stackdriver_exporter
+    git:
+      url: https://github.com/prometheus-community/stackdriver_exporter
+      ref: v0.11.0
   - path: ytt
     git:
       url: https://github.com/vmware-tanzu/carvel-ytt

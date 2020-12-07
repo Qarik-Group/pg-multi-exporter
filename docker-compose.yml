@@ -5,23 +5,28 @@ services:
     build: .
     restart: on-failure
     environment:
-      - "PG_PASSWORD=postgres"
-      - "PG_USERNAME=postgres"
-      - "PG_HOST=postgres"
-      - "PG_PORT=5432"
+      - "PG_PASSWORD=QiX12xk37o3z8IWN5kTSWP55Nrw6Lg"
+      - "PG_USERNAME=superuser"
+      - "PG_HOST=10.128.136.70"
+      - "PG_PORT=5524"
       - "PG_SSL_MODE=disable"
-  postgres:
-    image: postgres:11
-    ports:
-      - "5432:5432"
-    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200
-    environment:
-      - "POSTGRES_PASSWORD=postgres"
-      - "POSTGRES_USERNAME=postgres"
-      - "POSTGRES_DATABASE=postgres"
-      - "ALLOW_EMPTY_PASSWORD=yes"
-    volumes:
-      - ./images/postgres/enable-stats.sh:/docker-entrypoint-initdb.d/enable-stats.sh:ro
+      # - "PG_EXPORTER_WEB_LISTEN_ADDRESS=:9187"
+      - "GOOGLE_APPLICATION_CREDENTIALS=/templates/stackdriver_exporter/gcp.json"
+      # - "STACKDRIVER_EXPORTER_WEB_LISTEN_ADDRESS=9255"
+      - "STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID=snw-cfsummit"
+      - "STACKDRIVER_EXPORTER_MONITORING_METRICS_TYPE_PREFIXES=cloudsql.googleapis.com/database/cpu/utilization,cloudsql.googleapis.com/database/disk/read_ops_count,cloudsql.googleapis.com/database/disk/write_ops_count"
+  # postgres:
+  #   image: postgres:11
+  #   ports:
+  #     - "5432:5432"
+  #   command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200
+  #   environment:
+  #     - "POSTGRES_PASSWORD=postgres"
+  #     - "POSTGRES_USERNAME=postgres"
+  #     - "POSTGRES_DATABASE=postgres"
+  #     - "ALLOW_EMPTY_PASSWORD=yes"
+  #   volumes:
+  #     - ./images/postgres/enable-stats.sh:/docker-entrypoint-initdb.d/enable-stats.sh:ro
   telegraf:
     image: telegraf
     container_name: telegraf

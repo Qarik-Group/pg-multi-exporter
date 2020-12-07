@@ -14,6 +14,10 @@ directories:
       - v0.8.0
     path: postgres_exporter
   - git:
+      commitTitle: Release 0.11.0 (#107)...
+      sha: aafa2f0e851f2e07772a388dbf4590484513a19f
+    path: stackdriver_exporter
+  - git:
       commitTitle: set version to 0.30.0
       sha: 98c00dd09dae7a75f3c31e89e7d855671d6a9dce
       tags:
