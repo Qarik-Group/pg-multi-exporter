@@ -5,10 +5,10 @@ services:
     build: .
     restart: on-failure
     environment:
-      - "PG_PASSWORD=${PG_PASSWORD}"
-      - "PG_USERNAME=${PG_USERNAME}"
-      - "PG_HOST=${PG_HOST}"
-      - "PG_PORT=${PG_PORT}"
+      - "PG_PASSWORD=${PG_PASSWORD:-postgres}"
+      - "PG_USERNAME=${PG_USERNAME:-postgres}"
+      - "PG_HOST=${PG_HOST:-postgres}"
+      - "PG_PORT=${PG_PORT:-5432}"
       - "PG_SSL_MODE=disable"
       - "INFLUXDB_ENDPOINT=http://influxdb:8086"
       - "GCP_SERVICE_ACCOUNT=${GCP_SERVICE_ACCOUNT}"
