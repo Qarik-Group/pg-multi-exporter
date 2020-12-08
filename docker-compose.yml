@@ -10,12 +10,8 @@ services:
       - "PG_HOST=postgres"
       - "PG_PORT=5432"
       - "PG_SSL_MODE=disable"
-      # - "PG_EXPORTER_WEB_LISTEN_ADDRESS=:9187"
-      - "GOOGLE_APPLICATION_CREDENTIALS=/templates/stackdriver_exporter/gcp.json"
-      # - "STACKDRIVER_EXPORTER_WEB_LISTEN_ADDRESS=9255"
-      - "STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID=snw-cfsummit"
-      - "STACKDRIVER_EXPORTER_MONITORING_METRICS_TYPE_PREFIXES=cloudsql.googleapis.com/database/cpu/utilization,cloudsql.googleapis.com/database/disk/read_ops_count,cloudsql.googleapis.com/database/disk/write_ops_count"
       - "INFLUXDB_ENDPOINT=http://influxdb:8086"
+      - "GCP_SERVICE_ACCOUNT=${GCP_SERVICE_ACCOUNT}"
   postgres:
     image: postgres:11
     ports:

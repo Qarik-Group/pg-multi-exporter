@@ -1,11 +1,15 @@
 #!/usr/bin/with-contenv sh
 
-cat <<EOF > /templates/inputs.yml
+set -e
+
+echo "
 #@data/values
 ---
 influxdb:
-  endpoint: "${INFLUXDB_ENDPOINT}"
-EOF
+  endpoint: '${INFLUXDB_ENDPOINT}'
+gcp:
+  service_account: '${GCP_SERVICE_ACCOUNT}'
+" > /templates/inputs.yml
 
 ytt -f /templates \
   --file-mark '**/*.sh:type=text-template' \
