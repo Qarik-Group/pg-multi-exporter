@@ -359,43 +359,6 @@
             },
             {
               "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_difference(\"counter\") AS diff FROM \"pg_stat_statements_total_time_seconds\" WHERE $timeFilter GROUP BY \"queryid\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
                 "queryid"
               ],
               "type": "tag"
@@ -410,6 +373,8 @@
           "measurement": "CF.pg-multi-exporter.ccdb.pg_stat_statements_mean_time_seconds",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"gauge\") FROM \"CF.pg-multi-exporter.ccdb.pg_stat_statements_mean_time_seconds\" WHERE $timeFilter GROUP BY time($__interval), \"queryid\" fill(null)",
+          "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -640,5 +605,5 @@
   "timezone": "",
   "title": "Postgres",
   "uid": "KuQtaf0Gz",
-  "version": 7
+  "version": 8
 }
