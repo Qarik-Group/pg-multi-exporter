@@ -23,7 +23,7 @@ services:
       - "POSTGRES_DATABASE=postgres"
       - "ALLOW_EMPTY_PASSWORD=yes"
     volumes:
-      - ./images/postgres/enable-stats.sh:/docker-entrypoint-initdb.d/enable-stats.sh:ro
+      - ./images/postgres:/docker-entrypoint-initdb.d
   influxdb:
     image: influxdb
     container_name: influxdb
