@@ -6,7 +6,7 @@
 export GOOGLE_APPLICATION_CREDENTIALS=/etc/stackdriver_exporter/service_account.json
 
 (@ load("@ytt:data", "data") @)
-(@ if data.values.gcp.service_account: @)
+(@ if data.values.config.gcp.service_account: @)
 stackdriver_exporter \
     --monitoring.metrics-type-prefixes "cloudsql.googleapis.com/database/cpu/utilization,cloudsql.googleapis.com/database/disk/read_ops_count,cloudsql.googleapis.com/database/disk/write_ops_count"
 (@ else: @)

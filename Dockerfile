@@ -7,7 +7,6 @@ ENV CGO_ENABLED=0
 ENV GOFLAGS="-mod=vendor"
 
 RUN cd /src/telegraf && go build -o /out/telegraf ./cmd/telegraf
-RUN cd /src/postgres_exporter && go build -o /out/postgres_exporter ./cmd/postgres_exporter
 RUN cd /src/stackdriver_exporter && go build -o /out/stackdriver_exporter .
 RUN cd /src/ytt && go build -o /out/ytt ./cmd/ytt
 

@@ -8,14 +8,10 @@ directories:
       - v1.16.3
     path: telegraf
   - git:
-      commitTitle: Add a build info metric (#323)...
-      sha: aeec47ead4ad3941cf1b6588b1ac5a44ca9e9c4b
-      tags:
-      - v0.8.0
-    path: postgres_exporter
-  - git:
       commitTitle: Release 0.11.0 (#107)...
       sha: aafa2f0e851f2e07772a388dbf4590484513a19f
+      tags:
+      - v0.11.0
     path: stackdriver_exporter
   - git:
       commitTitle: set version to 0.30.0

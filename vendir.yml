@@ -7,10 +7,6 @@ directories:
     git:
       url: https://github.com/influxdata/telegraf
       ref: v1.16.3
-  - path: postgres_exporter
-    git:
-      url: https://github.com/wrouesnel/postgres_exporter
-      ref: v0.8.0
   - path: stackdriver_exporter
     git:
       url: https://github.com/prometheus-community/stackdriver_exporter
