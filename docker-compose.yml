@@ -11,7 +11,10 @@ services:
       - "PG_PORT=${PG_PORT:-5432}"
       - "PG_SSL_MODE=disable"
       - "INFLUXDB_ENDPOINT=http://influxdb:8086"
+      - "INFLUXDB_NAME_PREFIX=CF.pg-multi-exporter."
       - "GCP_SERVICE_ACCOUNT=${GCP_SERVICE_ACCOUNT}"
+    volumes:
+      - ./templates:/templates
   postgres:
     image: postgres:11
     ports:

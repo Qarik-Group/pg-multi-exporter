@@ -7,6 +7,7 @@ echo "
 ---
 influxdb:
   endpoint: '${INFLUXDB_ENDPOINT}'
+  name_prefix: '${INFLUXDB_NAME_PREFIX}'
 gcp:
   service_account: '${GCP_SERVICE_ACCOUNT}'
 " > /templates/inputs.yml
