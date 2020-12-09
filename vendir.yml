@@ -7,10 +7,6 @@ directories:
     git:
       url: https://github.com/influxdata/telegraf
       ref: v1.16.3
-  - path: stackdriver_exporter
-    git:
-      url: https://github.com/prometheus-community/stackdriver_exporter
-      ref: v0.11.0
   - path: ytt
     git:
       url: https://github.com/vmware-tanzu/carvel-ytt
