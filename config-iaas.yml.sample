@@ -1,0 +1,7 @@
+gcp:
+  service_account: ~
+
+aws:
+  region: ~
+  access_key: ~
+  secret_key: ~

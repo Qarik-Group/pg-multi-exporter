@@ -6,6 +6,7 @@ services:
     restart: on-failure
     volumes:
       - ./config.yml:/config.yml
+      - ./config-iaas.yml:/config-iaas.yml
       - ./templates:/templates
   postgres:
     image: postgres:11
