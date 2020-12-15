@@ -9,4 +9,4 @@
 - type: replace
   path: /instance_groups/name=postgres-metric-emitter/jobs/name=docker/properties/recipe/services/pg-multi-exporter/volumes/-
   value:
-    "$PWD/etc/pg-multi-exporter-iaas-conf.yml:/iaas-config.yml"
+    "$PWD/etc/pg-multi-exporter-iaas-conf.yml:/config-iaas.yml"

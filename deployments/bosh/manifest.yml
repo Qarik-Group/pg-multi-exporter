@@ -33,8 +33,8 @@ instance_groups:
             image: starkandwayne/pg-multi-exporter:latest
 releases:
 - name: containers
-  url: https://github.com/jhunt/containers-boshrelease/releases/download/v1.5.1/containers-1.5.1.tgz
-  version: 1.5.1
+  url: https://github.com/jhunt/containers-boshrelease/releases/download/v1.6.0/containers-1.6.0.tgz
+  version: 1.6.0
 
 update:
   canaries:          1
