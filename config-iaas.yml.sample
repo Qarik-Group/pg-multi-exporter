@@ -1,7 +1,11 @@
+# EXAMPLE FILE
+# use of of the following delete the ones you don't need
 gcp:
-  service_account: ~
+  service_account:
+
+# OR
 
 aws:
-  region: ~
-  access_key: ~
-  secret_key: ~
+  region:
+  access_key:
+  secret_key:

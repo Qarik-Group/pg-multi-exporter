@@ -7,6 +7,3 @@ databases:
   port: 5432
   username: postgres
   password: postgres
-
-gcp:
-  service_account: ~
