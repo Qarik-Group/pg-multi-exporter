@@ -9,5 +9,9 @@ directories:
       commitTitle: set version to 0.30.0
       sha: 98c00dd09dae7a75f3c31e89e7d855671d6a9dce
     path: ytt
+  - git:
+      commitTitle: update go deps...
+      sha: 4b31881c82e7512cab58f82b580c25a815d31238
+    path: azure_metrics_exporter
   path: src
 kind: LockConfig

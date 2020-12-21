@@ -11,4 +11,7 @@ directories:
     git:
       url: https://github.com/vmware-tanzu/carvel-ytt
       ref: v0.30.0
-
+  - path: azure_metrics_exporter
+    git:
+      url: https://github.com/webdevops/azure-metrics-exporter
+      ref: 20.11.0

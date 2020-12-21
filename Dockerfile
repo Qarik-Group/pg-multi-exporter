@@ -9,6 +9,8 @@ ENV GOFLAGS="-mod=vendor"
 RUN cd /src/telegraf && go build -o /out/telegraf ./cmd/telegraf
 RUN cd /src/ytt && go build -o /out/ytt ./cmd/ytt
 
+RUN cd /src/azure_metrics_exporter && go build -o /out/azure-metrics-exporter .
+
 FROM alpine
 
 ADD https://github.com/just-containers/s6-overlay/releases/download/v2.1.0.2/s6-overlay-amd64-installer /tmp/

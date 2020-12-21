@@ -1,11 +1,18 @@
 # EXAMPLE FILE
-# use of of the following delete the ones you don't need
-gcp:
-  service_account:
+# uncomment the needed paramaters
+# gcp:
+#   service_account:
 
-# OR
+# aws:
+#   region:
+#   access_key:
+#   secret_key:
 
-aws:
-  region:
-  access_key:
-  secret_key:
+# create application in azure and give it the "Monitoring Reader" role
+# azure:
+#   tenant_id:
+#   client_id:
+#   client_secret:
+#   subscription_id:
+
+
