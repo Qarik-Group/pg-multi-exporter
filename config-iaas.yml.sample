@@ -15,4 +15,7 @@
 #   client_secret:
 #   subscription_id:
 
-
+# alicloud:
+#   access_key_id:
+#   access_key_secret:
+#   region_id:
