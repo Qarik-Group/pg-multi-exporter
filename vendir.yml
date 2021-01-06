@@ -15,3 +15,7 @@ directories:
     git:
       url: https://github.com/webdevops/azure-metrics-exporter
       ref: 20.11.0
+  - path: aliyun_exporter
+    git:
+      url: https://github.com/aylei/aliyun-exporter.git
+      ref: v0.3.1

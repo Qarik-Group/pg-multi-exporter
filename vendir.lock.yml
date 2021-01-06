@@ -13,5 +13,9 @@ directories:
       commitTitle: update go deps...
       sha: 4b31881c82e7512cab58f82b580c25a815d31238
     path: azure_metrics_exporter
+  - git:
+      commitTitle: 0.3.1 release
+      sha: b5b35ace1dd1a8cc5b3f261fe6036a7af23ef0cb
+    path: aliyun_exporter
   path: src
 kind: LockConfig
