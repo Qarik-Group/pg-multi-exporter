@@ -1,3 +1,6 @@
+telegraf:
+  debug: false
+
 influxdb:
   endpoint: http://influxdb:8086
   name_prefix: CF.pg-multi-exporter.
