@@ -18,10 +18,8 @@ directories:
       - v0.30.0
     path: ytt
   - git:
-      commitTitle: update go deps...
-      sha: 4b31881c82e7512cab58f82b580c25a815d31238
-      tags:
-      - 20.11.0
+      commitTitle: Make ResourceTypes optional for ResourceTag (#89)
+      sha: 40606b2ae091e57e08376c0214427e7ea8f71bdc
     path: azure_metrics_exporter
   - git:
       commitTitle: 0.3.1 release
