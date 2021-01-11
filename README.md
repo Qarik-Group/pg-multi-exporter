@@ -1,5 +1,24 @@
 # differences in iaas metrics
 
+## Renamed metrics
+
+CPU:
+cpu_percentage (GCP, AWS, Alicloud, Azure)
+
+MEMORY:
+memory_percentage (Azure, GCP, Alicloud)
+freeable_memory (AWS)
+
+IOPS:
+read_ops_count (GCP, AWS)
+write_ops_count (GCP, AWS)
+iops_percentage (Alicoud, Azure)
+
+DISK:
+
+storage_percentage (GCP, Azure, Alicloud)
+free_storage_space (AWS)
+
 ## GCP
 name: database_cpu
 fields: utilization
@@ -17,37 +36,19 @@ fields: read_ops_count
 ### i think we only need average (configurable in telegraph.conf)
 name: database
 fields: cpu_utilization_average
-        cpu_utilization_maximum
-        cpu_utilization_minimum
-        cpu_utilization_sum
         read_iops_average
-        read_iops_maximum
-        read_iops_minimum
-        read_iops_sum
         write_iops_average
-        write_iops_maximum
-        write_iops_minimum
-        write_iops_sum
         database_connections_average
-        database_connections_maximum
-        database_connections_minimum
-        database_connections_sum
         freeable_memory_average
-        freeable_memory_maximum
-        freeable_memory_minimum
-        freeable_memory_sum
         free_storage_space_average
-        free_storage_space_maximum
-        free_storage_space_minimum
-        free_storage_space_sum
 
 ## Azure
 name: database
-fields: cpu
-        memory
-        read_iops
-        write_iops
-        storage
+fields: cpu_percent
+        memory_percent
+        read_iops  (not-available in single server)
+        write_iops (not-available in single server)
+        storage_percentage
 
 
 ## Alicloud
