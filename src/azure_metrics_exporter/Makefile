@@ -1,46 +1,59 @@
-.PHONY: all build clean image check vendor dependencies
+# Copyright 2015 The Prometheus Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-NAME				:= azure-metrics-exporter
-GIT_TAG				:= $(shell git describe --dirty --tags --always)
-GIT_COMMIT			:= $(shell git rev-parse --short HEAD)
-LDFLAGS             := -X "main.gitTag=$(GIT_TAG)" -X "main.gitCommit=$(GIT_COMMIT)" -extldflags "-static"
+GO    := GO15VENDOREXPERIMENT=1 go
+PROMU := $(GOPATH)/bin/promu
+pkgs   = $(shell $(GO) list ./... | grep -v /vendor/)
 
-PKGS				:= $(shell go list ./... | grep -v -E '/vendor/|/test')
-FIRST_GOPATH		:= $(firstword $(subst :, ,$(shell go env GOPATH)))
-GOLANGCI_LINT_BIN	:= $(FIRST_GOPATH)/bin/golangci-lint
+PREFIX                  ?= $(shell pwd)
+BIN_DIR                 ?= $(shell pwd)
+DOCKER_REPO             ?= robustperception
+DOCKER_IMAGE_NAME       ?= azure_metrics_exporter
+DOCKER_IMAGE_TAG        ?= $(subst /,-,$(shell git rev-parse --abbrev-ref HEAD))
 
+all: format build test
 
-all: build
+test: build
+	@echo ">> running tests"
+	@$(GO) test -short $(pkgs)
 
-clean:
-	git clean -Xfd .
+style:
+	@echo ">> checking code style"
+	@! gofmt -d $(shell find . -path ./vendor -prune -o -name '*.go' -print) | grep '^'
 
-build:
-	CGO_ENABLED=0 go build -a -ldflags '$(LDFLAGS)' -o $(NAME) .
+format:
+	@echo ">> formatting code"
+	@$(GO) fmt $(pkgs)
 
-vendor:
-	go mod tidy
-	go mod vendor
-	go mod verify
+vet:
+	@echo ">> vetting code"
+	@$(GO) vet $(pkgs)
 
-image: build
-	docker build -t $(NAME):$(TAG) .
+build: promu
+	@echo ">> building binaries"
+	@$(PROMU) build --prefix $(PREFIX)
 
-build-push-development:
-	docker build -t webdevops/$(NAME):development . && docker push webdevops/$(NAME):development
+tarball: promu
+	@echo ">> building release tarball"
+	@$(PROMU) tarball --prefix $(PREFIX) $(BIN_DIR)
 
-test:
-	go test ./...
+docker:
+	@echo ">> building docker image"
+	@docker build -t "$(DOCKER_REPO)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)" .
 
-.PHONY: lint
-lint: $(GOLANGCI_LINT_BIN)
-	# megacheck fails to respect build flags, causing compilation failure during linting.
-	# instead, use the unused, gosimple, and staticcheck linters directly
-	$(GOLANGCI_LINT_BIN) run -D megacheck -E unused,gosimple,staticcheck --timeout=10m
+promu:
+	@GOOS=$(shell uname -s | tr A-Z a-z) \
+		GOARCH=$(subst x86_64,amd64,$(patsubst i%86,386,$(shell uname -m))) \
+		$(GO) get -u github.com/prometheus/promu
 
-dependencies: $(GOLANGCI_LINT_BIN)
-	go mod download
-
-$(GOLANGCI_LINT_BIN):
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(FIRST_GOPATH)/bin v1.30.0
-
+.PHONY: all style format build test vet tarball docker promu

@@ -1,234 +1,168 @@
-Azure Insights metrics exporter
-===============================
+# Azure-metrics-exporter
 
-[![license](https://img.shields.io/github/license/webdevops/azure-metrics-exporter.svg)](https://github.com/webdevops/azure-metrics-exporter/blob/master/LICENSE)
-[![DockerHub](https://img.shields.io/badge/DockerHub-webdevops%2Fazure--metrics--exporter-blue)](https://hub.docker.com/r/webdevops/azure-metrics-exporter/)
-[![Quay.io](https://img.shields.io/badge/Quay.io-webdevops%2Fazure--metrics--exporter-blue)](https://quay.io/repository/webdevops/azure-metrics-exporter)
+Azure metrics exporter for [Prometheus.](https://prometheus.io)
 
-Prometheus exporter for Azure Insights metrics (on demand).
-Supports metrics fetching from all resource with one scrape (automatic service discovery) and also supports dimensions.
+Allows for the exporting of metrics from Azure applications using the [Azure monitor API.](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-rest-api-walkthrough)
 
-Configuration (except Azure connection) of this exporter is made entirely in Prometheus instead of a seperate configuration file, see examples below.
+## Install
 
-Configuration
--------------
-
-Normally no configuration is needed but can be customized using environment variables.
-
-```
-Usage:
-  azure-metrics-exporter [OPTIONS]
-
-Application Options:
-      --debug                              debug mode [$DEBUG]
-  -v, --verbose                            verbose mode [$VERBOSE]
-      --log.json                           Switch log output to json format [$LOG_JSON]
-      --azure-environment=                 Azure environment name (default: AZUREPUBLICCLOUD) [$AZURE_ENVIRONMENT]
-      --concurrency.subscription=          Concurrent subscription fetches (default: 5) [$CONCURRENCY_SUBSCRIPTION]
-      --concurrency.subscription.resource= Concurrent requests per resource (inside subscription requests) (default:
-                                           10) [$CONCURRENCY_SUBSCRIPTION_RESOURCE]
-      --enable-caching                     Enable internal caching [$ENABLE_CACHING]
-      --bind=                              Server address (default: :8080) [$SERVER_BIND]
-
-Help Options:
-  -h, --help                               Show this help message
+```bash
+go get -u github.com/RobustPerception/azure_metrics_exporter
 ```
 
-for Azure API authentication (using ENV vars) see https://github.com/Azure/azure-sdk-for-go#authentication
-
-Metrics
--------
-
-| Metric                              | Description                                                                    |
-|-------------------------------------|--------------------------------------------------------------------------------|
-| `azurerm_stats_metric_collecttime`  | General exporter stats                                                         |
-| `azurerm_stats_metric_requests`     | Counter of resource metric requests with result (error, success)               |
-| `azurerm_resource_metric`           | Resource metrics exported by probes (can be changed using `name` parameter)    |
-| `azurerm_loganalytics_query_result` | LogAnalytics rows exported by probes                                           |
-
-
-HTTP Endpoints
---------------
-
-| Endpoint                       | Description                                                                         |
-|--------------------------------|-------------------------------------------------------------------------------------|
-| `/metrics`                     | Default prometheus golang metrics                                                   |
-| `/probe/metrics/resource`      | Probe metrics for one resource (see `azurerm_resource_metric`)                      |
-| `/probe/metrics/list`          | Probe metrics for list of resources (see `azurerm_resource_metric`)                 |
-| `/probe/metrics/scrape`        | Probe metrics for list of resources and config on resource by tag name (see `azurerm_resource_metric`) |
-| `/probe/loganalytics/query`    | Probe metrics from LogAnalytics query (see `azurerm_loganalytics_query_result`)     |
-
-
-#### /probe/metrics/resource parameters
-
-
-| GET parameter          | Default                   | Required | Multiple | Description                                                          |
-|------------------------|---------------------------|----------|----------|----------------------------------------------------------------------|
-| `subscription`         |                           | **yes**  | **yes**  | Azure Subscription ID                                                |
-| `target`               |                           | **yes**  | **yes**  | Azure Resource URI                                                   |
-| `timespan`             | `PT1M`                    | no       | no       | Metric timespan                                                      |
-| `interval`             |                           | no       | no       | Metric timespan                                                      |
-| `metric`               |                           | no       | **yes**  | Metric name                                                          |
-| `aggregation`          |                           | no       | **yes**  | Metric aggregation (`minimum`, `maximum`, `average`, `total`, `count`, multiple possible separated with `,`) |
-| `name`                 | `azurerm_resource_metric` | no       | no       | Prometheus metric name                                               |
-| `metricFilter`         |                           | no       | no       | Prometheus metric filter (dimension support)                         |
-| `metricTop`            |                           | no       | no       | Prometheus metric dimension count (dimension support)                |
-| `metricOrderBy`        |                           | no       | no       | Prometheus metric order by (dimension support)                       |
-| `cache`                | (same as timespan)        | no       | no       | Use of internal metrics caching                                      |
-
-*Hint: Multiple values can be specified multiple times or with a comma in a single value.*
-
-#### /probe/metrics/list parameters
-
-| GET parameter          | Default                   | Required | Multiple | Description                                                          |
-|------------------------|---------------------------|----------|----------|----------------------------------------------------------------------|
-| `subscription`         |                           | **yes**  | **yes**  | Azure Subscription ID (or multiple separate by comma)                |
-| `filter`               |                           | **yes**  | no       | Azure Resource filter (https://docs.microsoft.com/en-us/rest/api/resources/resources/list)                                              |
-| `timespan`             | `PT1M`                    | no       | no       | Metric timespan                                                      |
-| `interval`             |                           | no       | no       | Metric timespan                                                      |
-| `metric`               |                           | no       | **yes**  | Metric name                                                          |
-| `aggregation`          |                           | no       | **yes**  | Metric aggregation (`minimum`, `maximum`, `average`, `total`, `count`, multiple possible separated with `,`) |
-| `name`                 | `azurerm_resource_metric` | no       | no       | Prometheus metric name                                               |
-| `metricFilter`         |                           | no       | no       | Prometheus metric filter (dimension support)                         |
-| `metricTop`            |                           | no       | no       | Prometheus metric dimension count (dimension support)                |
-| `metricOrderBy`        |                           | no       | no       | Prometheus metric order by (dimension support)                       |
-| `cache`                | (same as timespan)        | no       | no       | Use of internal metrics caching                                      |
-
-*Hint: Multiple values can be specified multiple times or with a comma in a single value.*
-
-#### /probe/metrics/scrape parameters
-
-| GET parameter          | Default                   | Required | Multiple | Description                                                          |
-|------------------------|---------------------------|----------|----------|----------------------------------------------------------------------|
-| `subscription`         |                           | **yes**  | **yes**  | Azure Subscription ID  (or multiple separate by comma)               |
-| `filter`               |                           | **yes**  | no       | Azure Resource filter (https://docs.microsoft.com/en-us/rest/api/resources/resources/list)                                              |
-| `metricTagName`        |                           | **yes**  | no       | Resource tag name for getting "metric" list                                                                                             |
-| `aggregationTagName`   |                           | **yes**  | no       | Resource tag name for getting "aggregation" list                     |
-| `timespan`             | `PT1M`                    | no       | no       | Metric timespan                                                      |
-| `interval`             |                           | no       | no       | Metric timespan                                                      |
-| `metric`               |                           | no       | **yes**  | Metric name                                                          |
-| `aggregation`          |                           | no       | **yes**  | Metric aggregation (`minimum`, `maximum`, `average`, `total`, multiple possible separated with `,`)        |
-| `name`                 | `azurerm_resource_metric` | no       | no       | Prometheus metric name                                               |
-| `metricFilter`         |                           | no       | no       | Prometheus metric filter (dimension support)                         |
-| `metricTop`            |                           | no       | no       | Prometheus metric dimension count (integer, dimension support)       |
-| `metricOrderBy`        |                           | no       | no       | Prometheus metric order by (dimension support)                       |
-| `cache`                | (same as timespan)        | no       | no       | Use of internal metrics caching                                      |
-
-*Hint: Multiple values can be specified multiple times or with a comma in a single value.*
-
-#### /probe/loganalytics/query parameters
-
-
-| GET parameter          | Default   | Required | Description                                                          |
-|------------------------|-----------|----------|----------------------------------------------------------------------|
-| `workspace   `         |           | **yes**  | Azure LogAnalytics workspace ID                                      |
-| `query`                |           | **yes**  | LogAnalytics query                                                   |
-| `timespan`             |           | **yes**  | Query timespan                                                       |
-
-
-Prometheus configuration
-------------------------
-
-Azure Redis metrics
-
-```yaml
-- job_name: azure-metrics-redis
-  scrape_interval: 1m
-  metrics_path: /probe/metrics/list
-  params:
-    name: ["my_own_metric_name"]
-    subscription: 
-    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-    filter: ["resourceType eq 'Microsoft.Cache/Redis'"]
-    metric:       
-    - connectedclients
-    - totalcommandsprocessed
-    - cachehits
-    - cachemisses
-    - getcommands
-    - setcommands
-    - operationsPerSecond
-    - evictedkeys
-    - totalkeys
-    - expiredkeys
-    - usedmemory
-    - usedmemorypercentage
-    - usedmemoryRss
-    - serverLoad
-    - cacheWrite
-    - cacheRead
-    - percentProcessorTime
-    - cacheLatency
-    - errors
-    interval: ["PT1M"]
-    timespan: ["PT1M"]
-    aggregation:  
-    - average
-    - total
-  static_configs:
-  - targets: ["azure-metrics:8080"]
+## Usage
+```bash
+./azure_metrics_exporter --help
 ```
 
-Virtual Gateway metrics
-```yaml
-- job_name: azure-metrics-virtualNetworkGateways
-  scrape_interval: 1m
-  metrics_path: /probe/metrics/list
-  params:
-    name: ["my_own_metric_name"]
-    subscription: 
-    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-    filter: ["resourceType eq 'Microsoft.Network/virtualNetworkGateways'"]
-    metric:       
-    - AverageBandwidth
-    - P2SBandwidth
-    - P2SConnectionCount
-    - TunnelAverageBandwidth
-    - TunnelEgressBytes
-    - TunnelIngressBytes
-    - TunnelEgressPackets
-    - TunnelIngressPackets
-    - TunnelEgressPacketDropTSMismatch
-    - TunnelIngressPacketDropTSMismatch
-    interval: ["PT5M"]
-    timespan: ["PT5M"]
-    aggregation:
-    - average
-    - total
-  static_configs:
-  - targets: ["azure-metrics:8080"]
+## Rate limits
+
+Note that Azure imposes an [API read limit of 15,000 requests per hour](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-request-limits) so the number of metrics you're querying for should be proportional to your scrape interval.
+
+## Exporter configuration
+
+This exporter requires a configuration file. By default, it will look for the azure.yml file in the CWD.
+
+### Azure account requirements
+
+This exporter reads metrics from an existing Azure subscription with these requirements:
+
+* If not using managed identities:
+  * An application must be registered (e.g., Azure Active Directory -> App registrations -> New application registration)
+  * The registered application must have reading permission to Azure Monitor (e.g., Subscriptions -> your_subscription -> Access control (IAM) -> Role assignments -> Add -> Add role assignment -> Role : "Monitoring Reader", Select:  your_app)
+
+* If using managed identities:
+  * The VM running the azure-metrics-exporter must have reading permission to Azure Monitor (e.g., Subscriptions -> your_subscription -> Access control (IAM) -> Role assignments -> Add -> Add role assignment -> Role : "Monitoring Reader", Select:  your_vm)
+  * Only `subscription_id` will be needed in your credentials configuration.
+
+### Example azure-metrics-exporter config
+
+`azure_resource_id` and `subscription_id` can be found under properties in the Azure portal for your application/service.
+
+`azure_resource_id`  should start with `/resourceGroups...` (`/subscriptions/xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxx` must be removed from the begining of `azure_resource_id` property value)
+
+`tenant_id` is found under `Azure Active Directory > Properties` and is listed as `Directory ID`.
+
+The `client_id` and `client_secret` are obtained by registering an application under 'Azure Active Directory'.
+
+`client_id` is the `application_id` of your application and the `client_secret` is generated by selecting your application/service under Azure Active Directory, selecting 'keys', and generating a new key.
+
+If you want to scrape metrics from Azure national clouds (e.g. AzureChinaCloud, AzureGermanCloud), you should provide `active_directory_authority_url` and `resource_manager_url` parameters. `active_directory_authority_url` is AzureAD url for getting access token. `resource_manager_url` is Azure API management url.
+If you won't provide `active_directory_authority_url` and `resource_manager_url` parameters, azure-metrics-exporter scrapes metrics from global cloud.
+You can find endpoints for national clouds [here](http://www.azurespeed.com/Information/AzureEnvironments)
+
+```
+active_directory_authority_url: "https://login.microsoftonline.com/"
+resource_manager_url: "https://management.azure.com/"
+credentials:
+  subscription_id: <secret>
+  client_id: <secret>
+  client_secret: <secret>
+  tenant_id: <secret>
+
+targets:
+  - resource: "azure_resource_id"
+    metrics:
+    - name: "BytesReceived"
+    - name: "BytesSent"
+  - resource: "azure_resource_id"
+    aggregations:
+    - Minimum
+    - Maximum
+    - Average
+    metrics:
+    - name: "Http2xx"
+    - name: "Http5xx"
+  - resource: "azure_resource_id"
+    metric_namespace: "Azure.VM.Windows.GuestMetrics"
+    metrics:
+    - name: 'Process\Thread Count'
+
+resource_groups:
+  - resource_group: "webapps"
+    resource_types:
+    - "Microsoft.Compute/virtualMachines"
+    resource_name_include_re:
+    - "testvm.*"
+    resource_name_exclude_re:
+    - "testvm12"
+    metrics:
+    - name: "CPU Credits Consumed"
+
+resource_tags:
+  - resource_tag_name: "group"
+    resource_tag_value: "tomonitor"
+    resource_types:
+      - "Microsoft.Compute/virtualMachines"
+    metrics:
+      - name: "CPU Credits Consumed"
+
 ```
 
-Virtual Gateway connection metrics (dimension support)
-```yaml
-- job_name: azure-metrics-virtualNetworkGateways-connections
-  scrape_interval: 1m
-  metrics_path: /probe/metrics/list
-  params:
-    name: ["my_own_metric_name"]
-    subscription:
-    - xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-    filter: ["resourceType eq 'Microsoft.Network/virtualNetworkGateways'"]
-    metric:
-    - TunnelAverageBandwidth
-    - TunnelEgressBytes
-    - TunnelIngressBytes
-    - TunnelEgressPackets
-    - TunnelIngressPackets
-    - TunnelEgressPacketDropTSMismatch
-    - TunnelIngressPacketDropTSMismatch
-    interval: ["PT5M"]
-    timespan: ["PT5M"]
-    aggregation:  
-    - average
-    - total
-    # by connection (dimension support)
-    metricFilter: ["ConnectionName eq '*'"]
-    metricTop: ["10"]
-  static_configs:
-  - targets: ["azure-metrics:8080"]
+By default, all aggregations are returned (`Total`, `Maximum`, `Average`, `Minimum`). It can be overridden per resource.
+
+The `metric_namespace` property is optional for all filtering types.
+When the metric namespace is specified, it will be added as a prefix of the metric name.
+It can be used to target [custom metrics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/metrics-custom-overview), such as [guest OS performance counters](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/collect-custom-metrics-guestos-vm-classic).
+If not specified, the default metric namespace of the resource will apply.
+
+### Resource group filtering
+
+Resources in a resource group can be filtered using the the following keys:
+
+`resource_types`:
+List of resource types to include (corresponds to the `Resource type` column in the Azure portal).
+
+`resource_name_include_re`:
+List of regexps that is matched against the resource name.
+Metrics of all matched resources are exported (defaults to include all)
+
+`resource_name_exclude_re`:
+List of regexps that is matched against the resource name.
+Metrics of all matched resources are ignored (defaults to exclude none)
+Excludes take precedence over the include filter.
+
+### Resource tag filtering
+
+Resources having a specific tag name and tag value can be filtered:
+
+`resource_tag_name`:
+Name of the tag to be filtered against.
+
+`resource_tag_value`:
+Value of the tag to be filtered against.
+
+`resource_types`: optional list of types kept in the list of resources gathered by tag. If none are specified, then all the resources are kept. All defined metrics must exist for each processed resource.
+
+### Retrieving Metric definitions
+
+In order to get all the metric definitions for the resources specified in your configuration file, run the following:
+
+```bash
+./azure_metrics_exporter --list.definitions
 ```
 
-In these examples all metrics are published with metric name `my_own_metric_name`.
+This will print your resource id's application/service name along with a list of each of the available metric definitions that you can query for for that resource.
 
-The [List of supported metrics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/metrics-supported) is available in the Microsoft Azure docs.
+### Retrieving Metric namespaces
+
+In order to get all the metric namespaces for the resources specified in your configuration file, run the following:
+
+```bash
+./azure_metrics_exporter --list.namespaces
+```
+
+This will print your resource id's application/service name along with a list of each of the available metric namespaces that you can query for for that resource.
+
+## Prometheus configuration
+
+### Example config
+```
+global:
+  scrape_interval:     60s # Set a high scrape_interval either globally or per-job to avoid hitting Azure Monitor API limits.
+
+scrape_configs:
+  - job_name: azure
+    static_configs:
+      - targets: ['localhost:9276']
+```
