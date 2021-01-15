@@ -3,6 +3,10 @@ kind: Config
 directories:
 - path: src
   contents:
+  - path: lunner
+    git:
+      url: https://github.com/bodymindarts/lunner.git
+      ref: bdd8eb8
   - path: telegraf
     git:
       url: https://github.com/influxdata/telegraf

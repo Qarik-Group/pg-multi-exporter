@@ -2,4 +2,4 @@
 
 export GOOGLE_APPLICATION_CREDENTIALS=/etc/telegraf/stackdriver_service_account.json
 
-telegraf --config /etc/telegraf/telegraf.conf
+exec telegraf --config /etc/telegraf/telegraf.conf

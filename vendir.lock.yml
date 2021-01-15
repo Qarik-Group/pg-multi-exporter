@@ -2,20 +2,32 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
+      commitTitle: Become standby on startup
+      sha: bdd8eb8e06798cb0c1b14d2f59e7c395fad36308
+    path: lunner
+  - git:
       commitTitle: Telegraf v1.16.3
       sha: c7f217282543ec72bd871d4caf827d4a6bebfa5c
+      tags:
+      - v1.16.3
     path: telegraf
   - git:
       commitTitle: set version to 0.30.0
       sha: 98c00dd09dae7a75f3c31e89e7d855671d6a9dce
+      tags:
+      - v0.30.0
     path: ytt
   - git:
       commitTitle: update go deps...
       sha: 4b31881c82e7512cab58f82b580c25a815d31238
+      tags:
+      - 20.11.0
     path: azure_metrics_exporter
   - git:
       commitTitle: 0.3.1 release
       sha: b5b35ace1dd1a8cc5b3f261fe6036a7af23ef0cb
+      tags:
+      - v0.3.1
     path: aliyun_exporter
   path: src
 kind: LockConfig

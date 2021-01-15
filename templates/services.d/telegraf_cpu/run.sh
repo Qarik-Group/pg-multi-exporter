@@ -4,7 +4,7 @@
 
 export GOOGLE_APPLICATION_CREDENTIALS=/etc/telegraf/stackdriver_service_account.json
 
-telegraf --config /etc/telegraf/telegraf_cpu.conf
+exec telegraf --config /etc/telegraf/telegraf_cpu.conf
 
 (@ else: @)
 s6-svc -dXO /var/run/s6/services/telegraf_cpu

@@ -1,0 +1,14 @@
+#@ load("@ytt:data", "data")
+
+#@ db=data.values.config.databases[0]
+id: lunner
+leader_timeout_seconds: 30
+postgres:
+  connection: #@ "host={} port={} user={} password={} dbname=postgres sslmode=disable".format(db.host, db.port, db.username, db.password)
+hooks:
+  become_leader:
+    cmd: "/etc/lunner/become_leader.sh"
+    args: []
+  become_standby:
+    cmd: "/etc/lunner/become_standby.sh"
+    args: []
