@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 
 #@ db=data.values.config.databases[0]
-id: lunner
+id: #@ data.values.lunner_id
 leader_timeout_seconds: 30
 postgres:
   connection: #@ "host={} port={} user={} password={} dbname=postgres sslmode=disable".format(db.host, db.port, db.username, db.password)

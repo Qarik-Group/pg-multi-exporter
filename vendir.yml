@@ -6,7 +6,7 @@ directories:
   - path: lunner
     git:
       url: https://github.com/bodymindarts/lunner.git
-      ref: bdd8eb8
+      ref: 62a1359
   - path: telegraf
     git:
       url: https://github.com/influxdata/telegraf

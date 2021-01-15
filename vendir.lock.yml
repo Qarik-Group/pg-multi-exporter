@@ -2,8 +2,8 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Become standby on startup
-      sha: bdd8eb8e06798cb0c1b14d2f59e7c395fad36308
+      commitTitle: Spelling
+      sha: 62a135981adfa3e57be975916f13aa7c4f106c73
     path: lunner
   - git:
       commitTitle: Telegraf v1.16.3

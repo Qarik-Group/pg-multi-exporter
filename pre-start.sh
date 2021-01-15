@@ -6,11 +6,14 @@ args='--file-mark **/*.sh:type=text-template --file-mark **/*.conf:type=text-tem
 
 if [ -f /config-iaas.yml ]; then
   ytt -f /templates \
+  --data-value "lunner_id=$(hostname)" \
   --data-value-yaml "config=$(cat /config.yml)" \
   --data-value-yaml "iaas_config=$(cat /config-iaas.yml)" \
   ${args}
 else
   ytt -f /templates \
+  --data-value "lunner_id=$(hostname)" \
+  --data-value "id=$(hostname)"
   --data-value-yaml "config=$(cat /config.yml)" \
   ${args}
 fi
