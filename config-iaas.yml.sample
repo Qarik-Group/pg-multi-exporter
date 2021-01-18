@@ -1,15 +1,18 @@
 # EXAMPLE FILE
 # uncomment the needed paramaters
 # gcp:
+#   interval: 1m ##optional
 #   service_account:
 
 # aws:
+#   interval: 5m ##optional
 #   region:
 #   access_key:
 #   secret_key:
 
 # create application in azure and give it the "Monitoring Reader" role
 # azure:
+#   interval: 1m ##optional
 #   tenant_id:
 #   client_id:
 #   client_secret:
@@ -17,6 +20,7 @@
 #   resource_group:
 
 # alicloud:
+#   interval: 5m ##optional
 #   access_key_id:
 #   access_key_secret:
 #   region_id:
