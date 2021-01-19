@@ -1,0 +1,35 @@
+---
+meta:
+  name:    pg-multi-exporter
+  target:  snw
+  url:     https://pipes.starkandwayne.com
+
+  initial_version: 0.1.0
+
+  git: 
+    email: ci@starkandwayne.com
+    name: CI Bot
+
+  dockerhub:
+    username: ((dockerhub-username))
+    email:    ((dockerhub-email))
+    password: ((dockerhub-password))
+    repository: (( concat meta.github.owner "/" meta.name ))
+
+  aws:
+    region_name: us-east-2
+    access_key:  ((aws.access))
+    secret_key:  ((aws.secret))
+
+  github:
+    owner:  starkandwayne
+    repo:   pg-multi-exporter
+    branch: main
+    private_key:  ((github.private-key))
+    access_token: ((github.access-token))
+
+  slack:
+    webhook:       ((slack-webhook))
+    username:      ((slack-username))
+    icon:          ((slack-icon-url))
+    channel:       "#pg-multi-exporter"
