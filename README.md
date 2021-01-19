@@ -19,6 +19,11 @@ DISK:
 storage_percentage (GCP, Azure, Alicloud)
 free_storage_space (AWS)
 
+CONNECTIONS:
+active_connections (Azure)
+failed_connections (Azure)
+connections (AliCloud)
+
 ## GCP
 name: database_cpu
 fields: utilization
