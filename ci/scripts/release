@@ -46,7 +46,7 @@ if [[ -z $(git config --global user.name) ]]; then
 fi
 
 (cd ${REPO_ROOT}
- git merge --no-edit master
+ git merge --no-edit main
  git add -A
  git status
  git commit -m "release v${VERSION}")
