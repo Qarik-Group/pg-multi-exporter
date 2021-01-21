@@ -7,7 +7,7 @@ Supported IaaSes: GCP, AWS, Alicloud, Azure.
 
 ## Configuration
 
-You must mount a file to the path `/config.yml` inside the container. Optionally an additional `/config-iaas.yml` can also be mounted, though it is also fine to unify the config of these 2 files into a single `config.yml`.
+You must mount a file to the path `/config.yml` inside the container.
 
 Config structure:
 
@@ -25,9 +25,11 @@ databases:                             ## Array with connection details for as m
   username: postgres
   password: postgres
   #interval: 2m ##optional
+```
 
-# Optionally provided via config-iaas.yml
-# uncomment the needed paramaters
+Optionally an additional `/config-iaas.yml` can also be mounted to activate the IaaS specific metric collection:
+````
+# Uncomment the needed paramaters
 # gcp:
 #   interval: 1m ##optional
 #   service_account:
@@ -57,7 +59,7 @@ databases:                             ## Array with connection details for as m
 
 ## Implementation details
 
-The container is setup to run multipel processes (as needed) using the [s6 process manager](https://skarnet.org/software/s6/index.html) installed via the [s6-overlay](https://github.com/just-containers/s6-overlay) project.
+The container is setup to run multiple processes (as needed) using the [s6 process manager](https://skarnet.org/software/s6/index.html) installed via the [s6-overlay](https://github.com/just-containers/s6-overlay) project.
 
 Where possible all configuration is kept in the telegraf process but for some IaaSes an additional external collection process is required.
 
