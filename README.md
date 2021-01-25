@@ -28,7 +28,7 @@ databases:                             ## Array with connection details for as m
 ```
 
 Optionally an additional `/config-iaas.yml` can also be mounted to activate the IaaS specific metric collection:
-````
+```
 # Uncomment the needed paramaters
 # gcp:
 #   interval: 1m ##optional
