@@ -1,0 +1,21 @@
+#@ load("@ytt:data", "data")
+
+#@ if hasattr(data.values.iaas_config, "alicloud"):
+credential:
+  access_key_id: #@ data.values.iaas_config.alicloud.access_key_id
+  access_key_secret: #@ data.values.iaas_config.alicloud.access_key_secret
+  region_id: #@ data.values.iaas_config.alicloud.region_id
+#@ end
+
+metrics:
+  acs_rds_dashboard:
+  - name: CpuUsage
+    period: 300
+  - name: MemoryUsage
+    period: 300
+  - name: IOPSUsage
+    period: 300
+  - name: DiskUsage
+    period: 300
+  - name: ConnectionUsage
+    period: 300

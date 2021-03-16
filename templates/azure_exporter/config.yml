@@ -1,0 +1,24 @@
+#@ load("@ytt:data", "data")
+#@ if hasattr(data.values.iaas_config, "azure"):
+credentials:
+  tenant_id: #@ data.values.iaas_config.azure.tenant_id
+  client_id: #@ data.values.iaas_config.azure.client_id
+  client_secret: #@ data.values.iaas_config.azure.client_secret
+  subscription_id: #@ data.values.iaas_config.azure.subscription_id
+
+resource_groups:
+  - resource_group: #@ data.values.iaas_config.azure.resource_group
+    resource_types:
+    - "Microsoft.DBforPostgreSQL/servers"
+    aggregations:
+    - Average
+    #! metrics: https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-monitoring
+    #!          https://docs.microsoft.com/en-us/azure/postgresql/concepts-monitoring
+    metrics:
+    - name: "cpu_percent"
+    - name: "memory_percent"
+    - name: "io_consumption_percent"
+    - name: "storage_percent"
+    - name: "active_connections"
+    - name: "connections_failed"
+#@ end
