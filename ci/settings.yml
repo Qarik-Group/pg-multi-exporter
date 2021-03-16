@@ -1,12 +1,12 @@
 ---
 meta:
   name:    pg-multi-exporter
-  target:  snw
+  target:  pipes@main
   url:     https://pipes.starkandwayne.com
 
-  initial_version: 0.1.0
+  initial_version: 0.2.2
 
-  git: 
+  git:
     email: ci@starkandwayne.com
     name: CI Bot
 

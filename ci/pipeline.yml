@@ -75,13 +75,11 @@ jobs:
             username: (( grab meta.slack.username ))
             icon_url: (( grab meta.slack.icon ))
             text:     (( grab meta.slack.notification ))
-
   - name: minor
     public: true
     plan:
       - { get: version, trigger: false, params: {bump: minor} }
       - { put: version,                 params: {file: version/number} }
-
   - name: major
     public: true
     plan:
@@ -92,11 +90,11 @@ jobs:
     public: true
     serial: true
     plan:
-      - aggregate:
+    - do:
+      - in_parallel:
           - { get: version }
           - { get: edge, passed: [build], params: { save: true } }
           - { get: git,  passed: [build] }
-
       - task: release
         config:
           image_resource:
@@ -121,17 +119,14 @@ jobs:
             VERSION_FROM: version/number
             GIT_EMAIL:    (( grab meta.git.email ))
             GIT_NAME:     (( grab meta.git.name ))
-
       - put: latest # as 'latest'
         params:
           load:       edge
-
       - put: latest # as 'vX.Y.Z'
         params:
           tag:             version/number
           tag_prefix:      v
           load:       edge
-
       - put: version
         params:
           bump: patch
