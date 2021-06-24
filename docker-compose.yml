@@ -3,7 +3,7 @@ services:
   pg-multi-exporter:
     image: pg-multi-exporter
     build: .
-    restart: on-failure
+    restart: always
     volumes:
       - ./config.yml:/config.yml
       - ./config-iaas.yml:/config-iaas.yml
@@ -24,9 +24,11 @@ services:
     image: influxdb
     container_name: influxdb
     restart: always
+    environment: 
+      - "INFLUXD_CONFIG_PATH=/etc/influxdb/influxdb.conf"
     volumes:
      - ./images/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-    command: influxd -config /etc/influxdb/influxdb.conf
+    command: influxd
   grafana:
     image: grafana/grafana:7.3.4
     container_name: grafana

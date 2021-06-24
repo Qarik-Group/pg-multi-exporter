@@ -98,6 +98,7 @@ async fn run_pg_loop(state: State) -> Result<(), anyhow::Error> {
             .await
             {
                 eprintln!("[lunner] PG inner loop error {}", e);
+                std::process::exit(1)
             }
             match client.query_one(&select, &[]).await {
                 Ok(row) => {
@@ -107,6 +108,7 @@ async fn run_pg_loop(state: State) -> Result<(), anyhow::Error> {
                 Err(e) => {
                     eprintln!("[lunner] Selecting leader failed {}", e);
                     state.set_leader(false).await;
+                    std::process::exit(1)
                 }
             }
         }
